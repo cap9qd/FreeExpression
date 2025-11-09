@@ -80,12 +80,13 @@ int main( void )
 			
 			dial_poll( );  // polls the dials and processes their state
 			keypad_poll( ); // polls the keypad and executes functions
-			//display_update();
+			//display_update(); // Update display?
 
 		}
 		if( flag_Hz )
 		{
 			flag_Hz = 0;
+			//display_update(); // Update display?
 		}
     }
 	//return 0;

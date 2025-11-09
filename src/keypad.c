@@ -321,6 +321,7 @@ int keypad_poll( void )
 				int p=timer_get_stepper_speed()-1;
 				timer_set_stepper_speed(p);
 			}
+			display_update();
 			break;
 			
 		case KEYPAD_PLUS:		// increments either pressure or speed depending on what was last pressed 
@@ -333,6 +334,7 @@ int keypad_poll( void )
 				int p=timer_get_stepper_speed()+1;
 				timer_set_stepper_speed(p);
 			}
+			display_update();
 		break;
 	}
 	_beep(key);
