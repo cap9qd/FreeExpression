@@ -208,8 +208,8 @@ int keypad_poll( void )
 {
 	int c;
 	int key = keypad_scan( );
-	#ifdef DEBUG_KEYBOARD
 	char string[40];
+	#ifdef DEBUG_KEYBOARD
 	if(key>=0) {
 		sprintf(string,"%d",key);
 		display_puts(string);
@@ -316,12 +316,17 @@ int keypad_poll( void )
 				// pressure is inversely related to 1023, min pressure
 				int p=timer_get_pen_pressure()-1;
 				 timer_set_pen_pressure(p);
+				 sprintf(string,"Pressure: %d\r", timer_get_pen_pressure());
+				 display_puts( string );
 			}
 			if(k_state==KEYPAD_XTRA2) {  // SPEED SET
 				int p=timer_get_stepper_speed()-1;
 				timer_set_stepper_speed(p);
+				
+				sprintf(string,"Speed: %d\r", timer_get_stepper_speed());
+				display_puts( string );
 			}
-			display_update();
+			//display_update();
 			break;
 			
 		case KEYPAD_PLUS:		// increments either pressure or speed depending on what was last pressed 
@@ -329,12 +334,16 @@ int keypad_poll( void )
 				// pressure is inversely related to 1023, min pressure
 				int p=timer_get_pen_pressure()+1;
 				timer_set_pen_pressure(p);
+				sprintf(string,"Pressure: %d\r", timer_get_pen_pressure());
+				display_puts( string );
 			}
 			if(k_state==KEYPAD_XTRA2) { // SPEED SET
 				int p=timer_get_stepper_speed()+1;
 				timer_set_stepper_speed(p);
+				sprintf(string,"Speed: %d\r", timer_get_stepper_speed());
+				display_puts( string );
 			}
-			display_update();
+			//display_update();
 		break;
 	}
 	_beep(key);

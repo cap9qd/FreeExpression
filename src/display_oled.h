@@ -6,6 +6,8 @@
  */ 
 
 #ifdef MACHINE_EXPRESSION
+//#ifndef USE_U8G2
+
 #ifndef DISPLAY_OLED_H_
 #define DISPLAY_OLED_H_
 
@@ -15,5 +17,8 @@ int oled_display_nextpage(void);
 void oled_display_puts(const char *s) ;
 void oled_display_println(char *s);
 void oled_display_update(void);
+
 #endif
+
+//#endif //#ifndef USE_U8G2
 #endif //#ifdef MACHINE_EXPRESSION
