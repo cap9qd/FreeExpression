@@ -142,8 +142,7 @@ void timer_set_stepper_speed( int delay )
     OCR0A = delay - 1;
     TCCR0B |= 4; // default 1:64 prescaler
 	
-	//display_update();
-	
+	display_update();
 }
 
 int timer_get_pen_pressure()
@@ -175,8 +174,9 @@ void timer_set_pen_pressure( int pressure )
 	
 
 	unsigned pwm = (pressure) * (( MAX_PEN_PWM - MIN_PEN_PWM)/MAX_CUTTER_P_RANGES);
-    OCR1B  = (MAX_PEN_PWM -pwm);	
-	//display_update();
+    OCR1B  = (MAX_PEN_PWM -pwm);
+	
+	display_update();
 }
 
 /*

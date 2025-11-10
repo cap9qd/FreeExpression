@@ -73,7 +73,7 @@ void _oled_display_pressure(void);
 u8g_t u8g;
 
 static uint8_t cur_x=0,cur_y=0;
-char display_message[80]; // 4 lines of 20 chars??
+char display_message[80]; // 4 lines of 20 chars?? 
 
 // local functions
 /*
@@ -190,8 +190,8 @@ void oled_display_println(char *s) {
 
 u8x8_t u8x8;
 
-static uint8_t cur_x=0,cur_y=0;
-char display_message[80]; // 4 lines of 20 chars??
+static uint8_t cur_x=0, cur_y=0;
+char display_message[80]; // 6 lines by 14 chars for u8x8 char-mode = 84; last row is for pressure/speed so 70 is plenty
 
 #define DISPLAY_CLK_DIR DDRF
 #define DISPLAY_CLK_PORT PORTF
@@ -212,6 +212,10 @@ char display_message[80]; // 4 lines of 20 chars??
 #define DISPLAY_RESET_DIR DDRE
 #define DISPLAY_RESET_PORT PORTE
 #define DISPLAY_RESET_PIN 6
+
+
+#define MAX_LINE_LEN 14
+#define BOTTOM_ROW 6
 
 #define P_CPU_NS (1000000000UL / F_CPU)
 
@@ -315,7 +319,7 @@ void _oled_display_speed(void)
 	int s=timer_get_stepper_speed();
 	sprintf(&tempStr[0], "%d", s);
 	u8x8_SetFont(&u8x8, u8x8_font_chroma48medium8_r);
-	u8x8_DrawString(&u8x8, 4, 6, tempStr);
+	u8x8_DrawString(&u8x8, 4, BOTTOM_ROW, tempStr);
 }
 
 /*
@@ -328,7 +332,7 @@ void _oled_display_pressure(void)
 	int p=timer_get_pen_pressure();
 	sprintf(&tempStr[0], "%d", p);
 	u8x8_SetFont(&u8x8, u8x8_font_chroma48medium8_r);
-	u8x8_DrawString(&u8x8, 7, 6, tempStr);
+	u8x8_DrawString(&u8x8, 7, BOTTOM_ROW, tempStr);
 }
 
 
@@ -362,8 +366,6 @@ int min(int a, int b) {
 	return (a < b) ? a : b; // Using the ternary operator
 }
 
-#define MAX_LINE_LEN 14
-
 // main screen redraw functions
 void oled_display_update(void)
 {
@@ -379,6 +381,7 @@ void oled_display_update(void)
 	//sprintf(&temp_str[0], "%d", msg_len);
 	//u8x8_DrawString(&u8x8, 0, 6, temp_str);
 	
+	//Make a multi-line print
 	if ( msg_len >= MAX_LINE_LEN ) {
 		for(int idx = 0; idx <= min(5, msg_len/MAX_LINE_LEN); idx++){
 			msg_len = min(strlen(&display_message[idx*MAX_LINE_LEN]), MAX_LINE_LEN);

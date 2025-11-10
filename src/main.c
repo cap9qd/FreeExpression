@@ -78,8 +78,8 @@ int main( void )
 		{
 			flag_25Hz = 0;
 			
-			dial_poll( );  // polls the dials and processes their state
-			keypad_poll( ); // polls the keypad and executes functions
+			dial_poll();  // polls the dials and processes their state
+			keypad_poll(); // polls the keypad and executes functions
 			//display_update(); // Update display?
 
 		}
