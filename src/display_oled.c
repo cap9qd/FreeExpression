@@ -64,8 +64,11 @@
 #include "display_oled.h"
 #include "timer.h"
 
+#include "keypad.h"
+
 void _oled_display_speed(void);
 void _oled_display_pressure(void);
+void _oled_display_lang(void);
 
 #ifndef USE_U8G2
 #include "./m2u8/u8g.h"
@@ -372,6 +375,8 @@ void oled_display_update(void)
 	u8x8_ClearDisplay(&u8x8);
 	_oled_display_speed();
 	_oled_display_pressure();
+	_oled_display_lang();
+	
 	cur_x = cur_y = 0;
 	
 	size_t msg_len = strlen(display_message);
@@ -399,6 +404,20 @@ void oled_display_update(void)
 	else {
 		u8x8_SetFont(&u8x8, u8x8_font_chroma48medium8_r);
 		u8x8_DrawString(&u8x8, cur_x, cur_y, display_message);
+	}
+}
+
+void _oled_display_lang(){
+	switch(Lang){
+		case HPGL:
+			u8x8_DrawString(&u8x8, 10, 6, "HPGL");
+			break;
+		case GPGL:
+			u8x8_DrawString(&u8x8, 10, 6, "GPGL");
+			break;
+		case G_CODE:
+			u8x8_DrawString(&u8x8, 10, 6, "GCODE");
+			break;
 	}
 }
 

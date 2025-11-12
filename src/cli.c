@@ -52,26 +52,31 @@ void cli_poll(void)
 	char c;
 	int8_t cmd;
 	uint8_t labelchar;
-	
+	uint8_t print_display = 1;
 	
 	while((c = (char)usb_getc())!=SERIAL_NO_DATA) 
 	{
+		if (print_display == 1) {
+			display_puts("PLOT START...");
+			print_display = 0;
+		}
+			
 		switch(Lang)
 		{
 			case HPGL:
-			cmd = hpgl_char(c, &dstx, &dsty, &labelchar);
-			break;
+				cmd = hpgl_char(c, &dstx, &dsty, &labelchar);
+				break;
 			
 			case G_CODE:
-			cmd = gcode_char(c, &dstx, &dsty );
-			break;
+				cmd = gcode_char(c, &dstx, &dsty );
+				break;
 			
 			//case GPGL:
-			// TODO
-			//break;
+				// TODO
+				//break;
 			
 			default:
-			continue;		// just consume everything and do nothing
+				continue;		// just consume everything and do nothing
 			
 		}
 			
@@ -79,71 +84,73 @@ void cli_poll(void)
 		switch(cmd) 
 		{
 			case CMD_PU:
-			//sprintf(s,"PU: %d %d",dstx,dsty);
-			//display_puts( s);
+				//sprintf(s,"PU: %d %d",dstx,dsty);
+				//display_puts( s);
 				if (dstx >= 0 && dsty >= 0)	// filter out illegal moves 
 					stepper_move( dstx, dsty );
-			break;
+				break;
 			case CMD_PD:
-			//sprintf(s,"PD: %d %d",dstx,dsty);
-			//	display_puts( s);
+				//sprintf(s,"PD: %d %d",dstx,dsty);
+				//	display_puts( s);
 				if (dstx >= 0 && dsty >= 0)	// filter out illegal moves 
 					stepper_draw( dstx, dsty );
-			break;
+				break;
 		
 			case CMD_INIT:
 				// 1. home
 				// 2. init scale etc
 				// typically happens at start and end of each document;
 				dstx = dsty = 0;				
-		//	sprintf(s,"IN: %d %d",dstx,dsty);
-			//display_puts( s);
+				//	sprintf(s,"IN: %d %d",dstx,dsty);
+				//display_puts( s);
 				stepper_move( dstx, dsty );
 				break;
 			case CMD_SEEK0:
-			//sprintf(s,"SK: %d %d",dstx,dsty);
-			//display_puts( s);
+				//sprintf(s,"SK: %d %d",dstx,dsty);
+				//display_puts( s);
 				stepper_move( dstx, dsty  );
-			break;
+				break;
 #ifdef non_supported_commands			
 			case CMD_PA:  // not supported
-			break;
+				break;
 			case CMD_ARCABS:  // not supported
 				//arc_active = arc_init();
-			break;
+				break;
 			case CMD_LB0:  // not supported
-			//	text_beginlabel();
-			break;
+				//	text_beginlabel();
+				break;
 			case CMD_LB:  // not supported
-			//	if (labelchar != 0) {
-			//		char_active = text_char(labelchar, &dstx, &dsty, &penny);
-			//	}
-		
-			break;
+				//	if (labelchar != 0) {
+				//		char_active = text_char(labelchar, &dstx, &dsty, &penny);
+				//	}
+				break;
 			case CMD_SI: // not supported
 				//text_scale_cm(numpad[0], numpad[1]);
-			break;
+				break;
 			case CMD_SR: // not supported
 				//text_scale_rel(numpad[0], numpad[1]);
-			break;
+				break;
 			case CMD_DI: // not supported
 				//text_direction(numpad[0], numpad[1]);
-			break;
+				break;
 			//case CMD_FS:
 			//	stepper_pressure(numpad[0]*100);
 			//	break;
 			case CMD_VS:
-			//sprintf(s,"VS: %d",(int)numpad[0]);
-			//display_puts( s);
-			//	stepper_speed(numpad[0]);
-			break;
+				//sprintf(s,"VS: %d",(int)numpad[0]);
+				//display_puts( s);
+				//	stepper_speed(numpad[0]);
+				break;
 			case CMD_AS: // acceleration not supported
 				//set_acceleration_mode(numpad[0]);
-			break;
+				break;
 #endif
 			default:
-			break;
+				break;
 		}
 	}
-	
+	if (print_display == 0) {
+		display_puts("PLOT END!");
+		print_display = 1;
+	}
 }

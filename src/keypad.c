@@ -244,24 +244,24 @@ int keypad_poll( void )
 			break;	
 			
 		case KEYPAD_LOADMAT:
-		stepper_load_paper();
-		display_puts("Media loaded");
-		break;
+			stepper_load_paper();
+			display_puts("Media loaded");
+			break;
 
 		case KEYPAD_UNLOADMAT:
-		stepper_unload_paper();
-		display_puts("Media unloaded");
-		break;
+			stepper_unload_paper();
+			display_puts("Media unloaded");
+			break;
 		
 		case KEYPAD_RESETALL:
-		display_puts("Homing carriage...");
-		stepper_home();
-		break;
+			display_puts("Homing carriage...");
+			stepper_home();
+			break;
 		
 		case KEYPAD_BACKSPACE:
-		stepper_set_origin00();
-		display_puts("Location 0,0 set");
-		break;
+			stepper_set_origin00();
+			display_puts("Location 0,0 set");
+			break;
 		
 		// this jogs X and Y freely -- use to load, unload or set position for  0,0 origin
 		case KEYPAD_MOVEUP:
@@ -272,41 +272,41 @@ int keypad_poll( void )
 		case KEYPAD_MOVEDNRIGHT:
 		case KEYPAD_MOVERIGHT:
 		case KEYPAD_MOVEUPRIGHT:
-		stepper_jog_manual(key,25);		// move 1/16" each increment
+			stepper_jog_manual(key,25);		// move 1/16" each increment
 		
-		// For auto key repeat on these buttons , clear previous  kbd status[] so that a new button press registers again 
-		for(  c = 0; c < KBD_MAX_COLS; c++ )	
+			// For auto key repeat on these buttons , clear previous  kbd status[] so that a new button press registers again 
+			for(  c = 0; c < KBD_MAX_COLS; c++ )	
 	 
-			keypad_prev[c] = 0;
-		break;
+				keypad_prev[c] = 0;
+			break;
 		
 		
 #ifdef DEBUG_FLASH		
 		case KEYPAD_F1:
-		flash_test();
-		break;
+			flash_test();
+			break;
 #endif
 		case KEYPAD_F5:
-		display_puts("Cutter down");
-		pen_down();
-		break;
+			display_puts("Cutter down");
+			pen_down();
+			break;
 		
 		case KEYPAD_F6:
-		display_puts("Cutter up");
-		pen_up();
-		break;
+			display_puts("Cutter up");
+			pen_up();
+			break;
 		
 		
 		case KEYPAD_XTRA1:
-		{
-			k_state=key;
-			break;
-		}
+			{
+				k_state=key;
+				break;
+			}
 		case KEYPAD_XTRA2: 
-		{
-			k_state=key;
-			break;
-		}
+			{
+				k_state=key;
+				break;
+			}
 		case KEYPAD_CUT:
 			k_state=key;
 			break;
@@ -344,7 +344,7 @@ int keypad_poll( void )
 				display_puts( string );
 			}
 			//display_update();
-		break;
+			break;
 	}
 	_beep(key);
 	return key;

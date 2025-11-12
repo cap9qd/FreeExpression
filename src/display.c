@@ -7,7 +7,6 @@
 #include "display_oled.h"
 #endif
 
-
 void display_init(void)
 {
 #ifdef  MACHINE_CAKE
