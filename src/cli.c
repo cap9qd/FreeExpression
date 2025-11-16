@@ -52,13 +52,13 @@ void cli_poll(void)
 	char c;
 	int8_t cmd;
 	uint8_t labelchar;
-	uint8_t print_display = 1;
+	static uint8_t cli_loop_count = 0;
 	
 	while((c = (char)usb_getc())!=SERIAL_NO_DATA) 
 	{
-		if (print_display == 1) {
+		if (cli_loop_count == 0) {
 			display_puts("PLOT START...");
-			print_display = 0;
+			cli_loop_count = 50; // Set loop counter to 2sec (25hz loop * 2)
 		}
 			
 		switch(Lang)
@@ -139,7 +139,7 @@ void cli_poll(void)
 			case CMD_VS:
 				//sprintf(s,"VS: %d",(int)numpad[0]);
 				//display_puts( s);
-				//	stepper_speed(numpad[0]);
+				//stepper_speed(numpad[0]);
 				break;
 			case CMD_AS: // acceleration not supported
 				//set_acceleration_mode(numpad[0]);
@@ -149,8 +149,9 @@ void cli_poll(void)
 				break;
 		}
 	}
-	if (print_display == 0) {
-		display_puts("PLOT END!");
-		print_display = 1;
+	if (cli_loop_count > 0) {
+		cli_loop_count--; //Dec loop count
+		if(cli_loop_count == 0)
+			display_puts("PLOT END!");
 	}
 }
